@@ -74,9 +74,13 @@
 
 	f :: [Float] -> Float
 	f [] = ...                <- matcha una lista vuota
+	f l = ...                 <- matcha una lista di nome l che potrebbe essere qualunque cosa
 	f (x1:x2:[]) = ...        <- matcha una lista fatta da due elementi seguiti da una lista vuota (cioe' due elementi e basta)
 	f (x:xs) = ...            <- matcha una lista con un elemento x, poi il resto (potrebbe anche essere []) lo mette in xs
 	f (x:_) = ...             <- uguale al precedente
+
+   NOTA: un pattern con '_' va messo praticamente sempre in fondo a meno che tu non voglia qualcosa di molto particolare,
+         perche' e' un "catch all", cioe' l'underscore matchera' sicuramente quindi tutto cio' che viene dopo non e' neanche considerato
 
    Il costrutture underscore accetta qualsiasi cosa e la ignora, quindi ogni volta che una funzione deve matchare un argomento
    contro piu' di un costruttore ma alcuni "edge case" si volgiono ignorare, e' utile mettere come ultimo caso
