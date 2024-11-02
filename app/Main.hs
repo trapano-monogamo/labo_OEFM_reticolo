@@ -9,103 +9,14 @@ import Statistics.Distribution
 import Statistics.Distribution.StudentT
 
 -- project imports
-import Lambda
-import RefractionIndex
-import WhiteLight
-import Sodium
+import Analysis
+import LabParameters
 
 
+colorRed = "\ESC[31m" :: String
+colorGreen = "\ESC[32m" :: String
+colorDefault = "\ESC[0m" :: String
 
-{- ..:: NOTES ::..
- -
- -
- -
- - funzioni utili:
- -
- - 1. zip prende due liste [x_i] e [y_i] e produce una lista i cui elementi sono le coppie di elementi
- -    cioe' da' [(x_i, y_i)]
- -
- - 2. zipWith fa prende le due liste e le unisce con una funzione => da' [f(x_i,y_i)]
- -
- - 3. map applica una funzione a ciascun elemento di una lista, restituendo la lista con gli output:
- -    da' [f(x_i)]
- -
- - 4. ++ concatena due liste (anche le stringhe sono liste)
- -
- - 5. putStrLn, putStr, print sono tutte funzioni per printare sul terminale
- -
- - 6. show trasforma un dato che non ha tipo string in una stringa (se il tipo lo permette)
- -
- -
- -
- - notazioni utili:
- -
- - 1. non esistono le variabili in un linguaggio puramente funzionale. TUTTO e' fatto solo di funzioni.
- -    (no worries, e' possibile emulare la programmazione procedurale con l'aiuto delle monadi
- -    e in particolare la State Monad, che pero' qua non serve)
- -
- - 2. le function signature assomigliano molto a una scrittura matematica:
- -    f :: a -> b         prende un argomento di tipo a e restituisce un tipo b
- -    g :: a -> b -> c    prende un argomento di tipo a e un argomento di tipo b e restituisce un tipo c
- -
- - 3. se hai una funzione f(x,y,z), la si chiama senza parentesi e virgole:
- -    f x y z
- -
- - 4: il punto '.' e' la composizione di funzioni:
- -    f :: a -> b,  g :: b -> c     =>   g . f :: a -> c
- -
- - 5. il carattere $ e' praticamente un sostituto delle parentesi perche' modifica l'ordine di
- -    evaluation di un'espressione (leggilo come "valuta prima l'espressione che sta alla destra
- -    di $ fino alla fine" (cioe' fino alla prossima parentesi, che ha una precedenza piu' forte)
- -    
- -    perche' haskell si confonde se hai una cosa tipo `someFunction x + 2`, non sempre sa cosa eseguire tra
- -    `(someFunction x) + 2` oppure `someFunction (x + 2)`. 
- -
- -    => per evitare le parentesi che spesso possono appesantire troppo la lettura, scrivi
- -       `someFunction $ x + 2`, e se questa espressione sta in una parentesi piu' grande, il $ valutera'
- -       tutto solo fino alla parentesi che racchiude l'espressione in cui si trova.
- -
- - 6. se una funzione e' chiamata senza l'ultimo argomento, allora sta implicitamente creando una nuova funzione
- -    che prende un solo argomento e restituisce la funzione originale valutata negli argomenti gia' passati e nell'ultimo argomento.
- -    Cosi' via se manca ANCHE il penultimo argomento, e poi per il terzultimo etc...
- -
- -    Questo meccanismo si chiama function currying, o partial function application, e la funzione originale si chiama
- -    higher order function rispetto alle "funzioni parziali"
- -
- -    Questo si legge molto bene nelle function signatures: ogni argomento e' in realta' l'output di una funzione
- -    che prende gli argomenti precedenti, e questo output e' in realta' a sua volta una funzione che prende dei
- -    parametri. L'ultimo tipo di output e' il "vero" output nel senso procedurale della programmazione.
- -
- -    ES: `zipWith (*) xs ys` prende le due liste xs = [x_i] e ys = [y_i] e restituisce una lista i cui elementi sono
- -        la funzione * applicata agli argomenti x_i e y_i
- -        => [x_i * y_i]
- -
- -        pensa all'operazione * come una funzione * :: a -> a -> a, usata in una notazione particolare per cui
- -        la funzione e' un "infix", cioe' viene chiamata in mezzo ai suoi due argomenti
- -
- -
- -
- - sintassi utile:
- -
- - 1. 'where' specifica i simboli che compaiono nell'espressione precedente
- -
- - 2. 'let ... in ...' specifica (nel blocco let) i simboli che compaiono nel blocco in
- -
- - 3. 'let' da solo si usa nei "do block" che sono l'emulazione della programmazione procedurale
- -    nelle IO actions (in generale e' un operatore su una monade che permette di estrarre il risultato
- -    di un'espressione che agisce su una monade)
- -
- - 4. (\ ... -> ...) e' una lambda function (il \ dovrebbe rappresentare la stanga di una lambda... oh boy):
- -    dopo il \ si mettono i nomi degli argomenti e dopo la -> si mette l'espressione che viene valutata come funzione
- -
- - 5. `case ... of ...` e' l'equivalente di uno switch statemente in c++, guarda il valore che ha l'esressione nel blocco case,
- -    e valuta l'espressione che corrisponde al caso
- -
- - -}
-
-
-
--- ..:: Program ::..
 
 -- Restituisce la coppia (avg,err).
 -- 1. l'argomento l e' una lista di coppie (x_i, e_i) (valore, errore).
@@ -187,12 +98,8 @@ processFile :: String ->                               -- filename
                TTest ->                                -- t-test
                IO (Float, Float)                       -- return (avg,err)
 processFile path parseContents processData calcErrors bestEstimate units scaleFactor ttest = do
-  {- ASNI colors:
-   - default: \ESC[0m
-   - red:     \ESC[31m
-   - green:   \ESC[32m
-   -}
-  putStrLn $ "\n[*] Processing " ++ path
+  putStrLn $ colorGreen ++ "\n[*] Processing " ++ path ++ colorDefault
+
   withFile path ReadMode (\handle -> do
     -- read file, get the data and calculate stuff
     contents <- hGetContents handle
@@ -226,10 +133,26 @@ processFile path parseContents processData calcErrors bestEstimate units scaleFa
             upperBound = avg + tc * err
         putStrLn $ "\nMargins of error for confidence level of " ++ (show $ 100 * confidence) ++ "%:"
         putStrLn $ "tc = " ++ (show tc) ++ ": (" ++ (show $ scaleFactor * lowerBound) ++ ", " ++ (show $ scaleFactor * upperBound) ++ ")"
-      NoTest -> ()
+      NoTest -> do putStrLn "\nNo test to see here..."
 
     -- return results of calculations
     return (avg, err))
+
+
+processParameterFile :: String ->                -- filename
+                        (String -> [[Float]]) -> -- parser
+                        ([[Float]] -> Float) ->  -- operation on dataset
+                        ([[Float]] -> Float) ->    -- error estimate
+                        IO (Float, Float)        -- return (avg,err)
+processParameterFile path processFile calcParam calcParamError = do
+  putStrLn $ "[*] Processing '" ++ path ++ "':"
+  withFile path ReadMode (\handle -> do
+    contents <- hGetContents handle
+    let rawData = processFile contents
+        param = calcParam rawData
+        paramError = calcParamError rawData
+    putStrLn $ (show param) ++ " +- " ++ (show paramError)
+    return (param,paramError))
 
 
 
@@ -237,5 +160,13 @@ processFile path parseContents processData calcErrors bestEstimate units scaleFa
 
 main :: IO ()
 main = do
-  (_,_) <- processFile "./data/misure_viola1.csv" (simpleParser) (yoScriviLaFunziaPerCalcolareLambda) (yoIdemPerGliErrori) (weightedAverage) "nm" (10**6) (NoTest)
+  (theta0,theta0Err) <- processFile "./data/misure_orto.csv"    (simpleParser) (calcTheta0)              (calcTheta0Error)              (stdAverage) "rad" (1) (NoTest)
+  (step,stepError)   <- processFile "./data/misure_passo.csv"   (simpleParser) (calcLatticeStep theta0)  (calcLatticeStepError theta0)  (stdAverage) ""    (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_viola1.csv"  (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_viola2.csv"  (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_blu.csv"     (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_verde.csv"   (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_giallo1.csv" (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_giallo2.csv" (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (_,_)              <- processFile "./data/misure_rosso.csv"   (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
   return ()

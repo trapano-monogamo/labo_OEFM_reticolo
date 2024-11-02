@@ -25,6 +25,8 @@ source-repository head
 
 library
   exposed-modules:
+      Analysis
+      LabParameters
       Lib
   other-modules:
       Paths_lattice_interferometer
@@ -35,6 +37,7 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , statistics
   default-language: Haskell2010
 
 executable lattice-interferometer-exe
@@ -49,6 +52,7 @@ executable lattice-interferometer-exe
   build-depends:
       base >=4.7 && <5
     , lattice-interferometer
+    , statistics
   default-language: Haskell2010
 
 test-suite lattice-interferometer-test
@@ -64,4 +68,5 @@ test-suite lattice-interferometer-test
   build-depends:
       base >=4.7 && <5
     , lattice-interferometer
+    , statistics
   default-language: Haskell2010
