@@ -81,6 +81,7 @@
 
    NOTA: un pattern con '_' va messo praticamente sempre in fondo a meno che tu non voglia qualcosa di molto particolare,
          perche' e' un "catch all", cioe' l'underscore matchera' sicuramente quindi tutto cio' che viene dopo non e' neanche considerato
+		 (in questo caso non matcha proprio tutto, deve esserci almeno un elemento x nella lista).
 
    Il costrutture underscore accetta qualsiasi cosa e la ignora, quindi ogni volta che una funzione deve matchare un argomento
    contro piu' di un costruttore ma alcuni "edge case" si volgiono ignorare, e' utile mettere come ultimo caso
