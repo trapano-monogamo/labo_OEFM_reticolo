@@ -61,6 +61,28 @@
        pensa all'operazione * come una funzione * :: a -> a -> a, usata in una notazione particolare per cui
        la funzione e' un "infix", cioe' viene chiamata in mezzo ai suoi due argomenti
 
+7. nell'implementazione (binding) di una funzione, avviene di fatto un pattern match, in cui ogni argomento e'
+   matchato con un suo costruttore. I tipi semplici (i Float sono usati ovunque nel codice) hanno un unico costrutture implicito,
+   quindi nell'implementazione di f :: Float -> Float puoi usare direttamente il nome che dai all'argomento:
+
+     f :: Float -> Float
+	 f x = x ** 2
+
+   Molti tipi pero' hanno dei costruttori alternativi, tipo una lista. Una lista viene viene costruita tecnicamente
+   con i due punti ':', che possono indicare due cose: un elemento seguito da un altro elemento, oppure un elemento
+   seguito da un'altra lista.
+
+	f :: [Float] -> Float
+	f [] = ...                <- matcha una lista vuota
+	f (x1:x2:[]) = ...        <- matcha una lista fatta da due elementi seguiti da una lista vuota (cioe' due elementi e basta)
+	f (x:xs) = ...            <- matcha una lista con un elemento x, poi il resto (potrebbe anche essere []) lo mette in xs
+	f (x:_) = ...             <- uguale al precedente
+
+   Il costrutture underscore accetta qualsiasi cosa e la ignora, quindi ogni volta che una funzione deve matchare un argomento
+   contro piu' di un costruttore ma alcuni "edge case" si volgiono ignorare, e' utile mettere come ultimo caso
+   un caso in cui si matcha contro underscore, che quindi agisce come un caso super generico (in cui mettiamo un
+   "valore errore" in questo programma) che verra' chiamato quando tutti gli altri pattern precedenti non matchano
+
 
 
 ..:: sintassi utile ::..
