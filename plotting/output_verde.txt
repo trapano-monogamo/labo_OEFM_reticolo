@@ -1,0 +1,22 @@
+verde
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      27.8859
+NDf                       =            6
+Edm                       =  8.43849e-06
+NCalls                    =           18
+p0                        =      5438.89   +/-   6.23129     
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      23.7717
+NDf                       =            5
+Edm                       =  3.12486e-10
+NCalls                    =           46
+p0                        =      5471.12   +/-   17.0762     
+p1                        =     -63.2904   +/-   31.2041     
+
+Results with intercept:
+lambda  = 5471.12 +- 17.0762 C/Kg
+p(t)    = 0.57915
+p(chi2) = 0.000240177
+

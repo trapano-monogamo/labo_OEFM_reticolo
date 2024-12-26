@@ -1,0 +1,22 @@
+blu
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      36.5157
+NDf                       =           10
+Edm                       =  6.01719e-15
+NCalls                    =           23
+p0                        =      4353.09   +/-   3.97531     
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      35.9316
+NDf                       =            9
+Edm                       =  4.97064e-09
+NCalls                    =           47
+p0                        =      4362.15   +/-   12.5021     
+p1                        =     -19.2277   +/-   25.1605     
+
+Results with intercept:
+lambda  = 4362.15 +- 12.5021 C/Kg
+p(t)    = 0.747404
+p(chi2) = 4.07705e-05
+

@@ -1,0 +1,22 @@
+viola2
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      7.38845
+NDf                       =            5
+Edm                       =  2.33988e-13
+NCalls                    =           21
+p0                        =      4074.99   +/-   5.0516      
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =      6.75607
+NDf                       =            4
+Edm                       =  9.49814e-09
+NCalls                    =           46
+p0                        =      4065.48   +/-   12.9799     
+p1                        =      24.7137   +/-   31.0734     
+
+Results with intercept:
+lambda  = 4065.48 +- 12.9799 C/Kg
+p(t)    = 0.424845
+p(chi2) = 0.149354
+

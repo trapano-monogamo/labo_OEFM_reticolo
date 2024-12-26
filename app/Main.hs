@@ -96,7 +96,7 @@ processFile :: String ->                               -- filename
                String ->                               -- measurement units
                Float ->                                -- scale factor
                TTest ->                                -- t-test
-               IO (Float, Float)                       -- return (avg,err)
+               IO (Float, Float, [[Float]])            -- return (avg,err)
 processFile path parseContents processData calcErrors bestEstimate units scaleFactor ttest = do
   putStrLn $ colorGreen ++ "\n[*] Processing " ++ path ++ colorDefault
 
@@ -136,37 +136,39 @@ processFile path parseContents processData calcErrors bestEstimate units scaleFa
       NoTest -> do putStrLn "\nNo test to see here..."
 
     -- return results of calculations
-    return (avg, err))
+    return (avg, err, rawData))
 
 
-processParameterFile :: String ->                -- filename
-                        (String -> [[Float]]) -> -- parser
-                        ([[Float]] -> Float) ->  -- operation on dataset
-                        ([[Float]] -> Float) ->    -- error estimate
-                        IO (Float, Float)        -- return (avg,err)
-processParameterFile path processFile calcParam calcParamError = do
-  putStrLn $ "[*] Processing '" ++ path ++ "':"
-  withFile path ReadMode (\handle -> do
-    contents <- hGetContents handle
-    let rawData = processFile contents
-        param = calcParam rawData
-        paramError = calcParamError rawData
-    putStrLn $ (show param) ++ " +- " ++ (show paramError)
-    return (param,paramError))
 
+
+linRegPointsToString :: [(Float,Float,Float,Float)] -> String
+linRegPointsToString = foldl (\acc (a,b,c,d) -> acc ++ (show a) ++ " " ++ (show b) ++ " " ++ (show c) ++ " " ++ (show d) ++ "\n") ""
+
+makeLinRegPoints :: String -> Float -> [(Float,Float,Float,Float)] -> IO ()
+makeLinRegPoints filename expected regData = do
+  writeFile filename $ (show expected) ++ "\n" ++ (linRegPointsToString regData)
 
 
 -- ..:: Entry Point ::..
 
 main :: IO ()
 main = do
-  (theta0,theta0Err) <- processFile "./data/misure_orto.csv"    (simpleParser) (calcTheta0)              (calcTheta0Error)              (stdAverage) "rad" (1) (NoTest)
-  (step,stepError)   <- processFile "./data/misure_passo.csv"   (simpleParser) (calcLatticeStep theta0)  (calcLatticeStepError theta0)  (stdAverage) ""    (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_viola1.csv"  (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_viola2.csv"  (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_blu.csv"     (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_verde.csv"   (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_giallo1.csv" (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_giallo2.csv" (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
-  (_,_)              <- processFile "./data/misure_rosso.csv"   (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step theta0) (stdAverage) "A"   (1) (NoTest)
+  (theta0,theta0Err,_) <- processFile "./data/misure_orto.csv"    (simpleParser) (calcTheta0)              (calcTheta0Error)                        (stdAverage) "rad" (1) (NoTest)
+  (step,stepError,_)   <- processFile "./data/misure_passo.csv"   (simpleParser) (calcLatticeStep theta0)  (calcLatticeStepError theta0)            (stdAverage) "A"   (1) (ConfidenceInterval 0.95)
+  (_,_,viola1Data)     <- processFile "./data/misure_viola1.csv"  (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (SignificanceTest 4047 0.05)
+  (_,_,viola2Data)     <- processFile "./data/misure_viola2.csv"  (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (SignificanceTest 4077 0.05)
+  (_,_,bluData)        <- processFile "./data/misure_blu.csv"     (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (SignificanceTest 4358 0.05)
+  (_,_,verdeData)      <- processFile "./data/misure_verde.csv"   (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (SignificanceTest 5461 0.05)
+  (_,_,giallo1Data)    <- processFile "./data/misure_giallo1.csv" (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (SignificanceTest 5770 0.05)
+  (_,_,giallo2Data)    <- processFile "./data/misure_giallo2.csv" (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (SignificanceTest 5790 0.05)
+  (_,_,rossoData)      <- processFile "./data/misure_rosso.csv"   (simpleParser) (calcLambdas step theta0) (calcLambdaErrors step stepError theta0) (stdAverage) "A"   (1) (NoTest)
+
+  makeLinRegPoints "./plotting/viola1_reg.csv"  (4047) (linRegPoints step stepError theta0 viola1Data)
+  makeLinRegPoints "./plotting/viola2_reg.csv"  (4077) (linRegPoints step stepError theta0 viola2Data)
+  makeLinRegPoints "./plotting/blu_reg.csv"     (4358) (linRegPoints step stepError theta0 bluData)
+  makeLinRegPoints "./plotting/verde_reg.csv"   (5461) (linRegPoints step stepError theta0 verdeData)
+  makeLinRegPoints "./plotting/giallo1_reg.csv" (5770) (linRegPoints step stepError theta0 giallo1Data)
+  makeLinRegPoints "./plotting/giallo2_reg.csv" (5790) (linRegPoints step stepError theta0 giallo2Data)
+  makeLinRegPoints "./plotting/rosso_reg.csv"   (   0) (linRegPoints step stepError theta0 rossoData)
+
   return ()
