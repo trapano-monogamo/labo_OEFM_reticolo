@@ -112,13 +112,20 @@ int main(int argc, char **argv)
 	double intercept = line_with_intercept.GetParameter(1);
 	double intercept_err = line_with_intercept.GetParError(1);
 
+	double noq_lambda = line_without_intercept.GetParameter(0);
+	double noq_lambda_err = line_without_intercept.GetParError(0);
+
 	double t = abs(lambda - exp_value) / lambda_err;
 
 	cout << endl << endl
 		 << "Results with intercept:" << endl
 		 << "lambda  = " << lambda << " +- " << lambda_err << " C/Kg" << endl
 		 << "p(t)    = " << 2 * TMath::StudentI(-t, graph.GetN() - 2) << endl
-		 << "p(chi2) = " << line_with_intercept.GetProb() << endl << endl;
+		 << "p(chi2) = " << line_with_intercept.GetProb() << endl << endl
+		 << "Results without intercept:" << endl
+		 << "lambda  = " << noq_lambda << " +- " << noq_lambda_err << " C/Kg" << endl
+		 << "p(t)    = " << 2 * TMath::StudentI(-t, graph.GetN() - 1) << endl
+		 << "p(chi2) = " << line_without_intercept.GetProb() << endl << endl;
 
 	app.Run();
 }
