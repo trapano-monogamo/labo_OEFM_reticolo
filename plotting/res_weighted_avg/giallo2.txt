@@ -1,0 +1,34 @@
+errori:
+2278.59
+546.416
+221.812
+227.08
+111.011
+54.3321
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =     0.367789
+NDf                       =            5
+Edm                       =   4.5514e-11
+NCalls                    =           47
+p0                        =      5727.84   +/-   47.5413     
+****************************************
+Minimizer is Minuit2 / Migrad
+Chi2                      =    0.0776755
+NDf                       =            4
+Edm                       =  2.63604e-09
+NCalls                    =           76
+p0                        =      5849.56   +/-   233.372     
+p1                        =     -165.785   +/-   310.892     
+
+
+Results with intercept:
+lambda  = 5849.56 +- 233.372 C/Kg
+p(t)    = 0.811148
+p(chi2) = 0.999265
+
+Results without intercept:
+lambda  = 5727.84 +- 47.5413 C/Kg
+p(t)    = 0.808728
+p(chi2) = 0.996171
+

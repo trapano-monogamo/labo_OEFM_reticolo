@@ -3,4 +3,4 @@ module LabParameters
 ) where
 
 angleError :: Float
-angleError = 1 / (360 * 60)
+angleError = 1 / 120

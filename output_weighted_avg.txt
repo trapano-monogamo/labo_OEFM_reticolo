@@ -1,0 +1,152 @@
+
+[*] Processing ./data/misure_orto.csv
+
+Results:
+2.2782364 +- 8.333334e-3 rad
+2.2785275 +- 8.333334e-3 rad
+2.2785275 +- 8.333334e-3 rad
+2.2785275 +- 8.333334e-3 rad
+2.2785275 +- 8.333334e-3 rad
+2.2788181 +- 8.333334e-3 rad
+2.2785275 +- 8.333334e-3 rad
+
+Final Measure:
+2.2785273 +- 6.3473235e-5 rad
+
+No test to see here...
+
+[*] Processing ./data/misure_passo.csv
+
+Results:
+33469.848 +- 397.2093 A
+33460.04 +- 396.86182 A
+33469.848 +- 397.2093 A
+33991.484 +- 415.7939 A
+33933.316 +- 654.7265 A
+33534.914 +- 636.5855 A
+
+Final Measure:
+33643.24 +- 101.79151 A
+
+Margins of error for confidence level of 95.0%:
+tc = 0.13182974: (33629.82, 33656.656)
+
+[*] Processing ./data/misure_viola1.csv
+
+Results:
+4031.527 +- 192.8532 A
+4052.367 +- 123.841156 A
+4049.796 +- 87.7353 A
+4060.3362 +- 64.41511 A
+4022.366 +- 393.83347 A
+4017.591 +- 87.927185 A
+4007.071 +- 64.8464 A
+
+Final Measure:
+4035.11 +- 34.573116 A
+
+Statistical Significance at 5.0% for expected value of 4047.0:
+t0:  P(-inf <= -0.34390572) = 37.13244679965672%
+t_c: P(-inf <= -1.9431803) = 4.99999970793561%
+
+[*] Processing ./data/misure_viola2.csv
+
+Results:
+4049.7932 +- 87.73531 A
+4070.94 +- 393.76868 A
+4074.27 +- 192.73662 A
+4076.691 +- 123.73754 A
+4084.0608 +- 87.529 A
+4094.5886 +- 64.1332 A
+
+Final Measure:
+4079.5417 +- 40.74858 A
+
+Statistical Significance at 5.0% for expected value of 4077.0:
+t0:  P(-inf <= -6.2376358e-2) = 47.633992586805505%
+t_c: P(-inf <= -2.0150483) = 5.0000006882135715%
+
+[*] Processing ./data/misure_blu.csv
+
+Results:
+4323.4956 +- 86.024185 A
+4330.7183 +- 122.61282 A
+4325.5933 +- 86.010506 A
+4313.084 +- 62.247417 A
+4362.215 +- 393.36386 A
+4377.3887 +- 191.87248 A
+4357.7886 +- 122.48832 A
+4367.4873 +- 85.735405 A
+4377.3447 +- 61.662712 A
+4380.316 +- 61.635334 A
+4371.668 +- 85.707756 A
+
+Final Measure:
+4352.78 +- 25.875227 A
+
+Statistical Significance at 5.0% for expected value of 4358.0:
+t0:  P(-inf <= -0.20174566) = 42.20802237084712%
+t_c: P(-inf <= -1.8124611) = 4.999999877958133%
+
+[*] Processing ./data/misure_verde.csv
+
+Results:
+5392.525 +- 50.155357 A
+5446.5405 +- 391.60602 A
+5458.079 +- 188.24474 A
+5471.06 +- 116.54962 A
+5486.5303 +- 76.94132 A
+5414.0156 +- 116.8947 A
+5406.3633 +- 77.674065 A
+
+Final Measure:
+5422.872 +- 33.08187 A
+
+Statistical Significance at 5.0% for expected value of 5461.0:
+t0:  P(-inf <= -1.1525325) = 14.647197039306914%
+t_c: P(-inf <= -1.9431803) = 4.99999970793561%
+
+[*] Processing ./data/misure_giallo1.csv
+
+Results:
+5764.973 +- 391.01422 A
+5771.7227 +- 187.0271 A
+5784.2383 +- 114.570984 A
+5722.6333 +- 114.971634 A
+5709.2637 +- 74.80944 A
+5690.604 +- 45.68328 A
+
+Final Measure:
+5709.1836 +- 34.404865 A
+
+Statistical Significance at 5.0% for expected value of 5770.0:
+t0:  P(-inf <= -1.7676687) = 6.867975364000259%
+t_c: P(-inf <= -2.0150483) = 5.0000006882135715%
+
+[*] Processing ./data/misure_giallo2.csv
+
+Results:
+5793.894 +- 390.9587 A
+5785.5083 +- 186.97183 A
+5800.9985 +- 114.461 A
+5742.2593 +- 114.84461 A
+5730.7876 +- 74.59562 A
+5709.3257 +- 45.37923 A
+
+Final Measure:
+5728.1895 +- 34.24711 A
+
+Statistical Significance at 5.0% for expected value of 5790.0:
+t0:  P(-inf <= -1.8048398) = 6.546960910489348%
+t_c: P(-inf <= -2.0150483) = 5.0000006882135715%
+
+[*] Processing ./data/misure_rosso.csv
+
+Results:
+6217.5825 +- 390.1134 A
+6237.9204 +- 185.07506 A
+
+Final Measure:
+6234.184 +- 167.21213 A
+
+No test to see here...

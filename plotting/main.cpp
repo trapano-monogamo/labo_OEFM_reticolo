@@ -60,17 +60,17 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	cout << argv[2] << endl;
-
 	double exp_value;
 
 	char *filename = argv[1];
 	vector<Measure> data = read_file(filename, exp_value);
 	double test_slope = (data[data.size() - 1].y - data[0].y) / (data[data.size() - 1].x - data[0].x);
+
+	cout << "errori:" << endl;
 	for (auto &m : data)
 	{
-		cout << m << endl;
 		m.ey = sqrt(pow(m.ey, 2) + pow(m.ex * test_slope, 2));
+		cout << m.ey << endl;
 	}
 
 	TApplication app("linear regression", 0, 0);
